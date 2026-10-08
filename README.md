@@ -8,7 +8,7 @@ Publicado em https://azeugral.github.io/samtto/
 | Página | Conteúdo | Destaque do Instagram |
 |---|---|---|
 | `index.html` | Apresentação, ficha, amostra de tatuagens, como agendar, local, CTA | — |
-| `portfolio.html` | Tatuagens com filtros + lightbox ("Quero algo assim" leva ao agendar) | TATUSS, CURADOS, PROJETOS |
+| `portfolio.html` | 53 tatuagens do zip, filtros por estilo, 12 por vez com "Ver mais", lightbox ("Quero algo assim" leva ao agendar) | TATUSS, PROJETOS |
 | `papo.html` | Perguntas frequentes | PAPO/IDEIAS |
 | `orcamento.html` | Formulário que monta a mensagem e abre o WhatsApp | AGENDAR / PARCERIAS (bio) |
 
@@ -25,6 +25,11 @@ As páginas são geradas por `../_ref/build.py` (header e footer iguais em todas
 - Marca do hero: SAMTTO em papel com o vermelho deslocado por baixo (serigrafia fora de registro) e "tatupunk" pichado por cima. Entra como estêncil, o vermelho escorrega pro lugar e a tag aparece por último.
 - Outras animações: títulos aparecem como cópia de xerox passando; trabalhos são cartazes colados com fita que "batem" na parede; arame que se desenha; troca de página com rasgo (View Transitions).
 - Retirado em 08/10 a pedido: fitas em X, status da agenda no hero, página e seção de disponíveis, loja, carinha interativa.
+
+## Portfólio
+
+Estilos (filtros): Personagens, Neotribal, Feras e caveiras, Símbolos, Projetos (costas, peito, barriga). Uma peça pode estar em mais de um.
+Todas as fotos saem em 4:5 (640×800 na grade, até 1400 px no lightbox, webp). Fotos com texto, adesivo ou borda (1, 13, 15, 21, 48, 50, 51) têm recorte ajustado para esconder isso.
 
 ## Imagem de referência no agendar
 
@@ -49,7 +54,7 @@ O WhatsApp não aceita anexo por link (`wa.me`), então a imagem sobe para o **C
 Buscar `todo` / `a preencher` nas páginas e `CONFIRMAR` no código.
 
 1. ~~Logo em alta~~ recebido em 08/10.
-2. **Fotos do zip** em `assets/img/` (hoje são as miniaturas do Instagram): Tatuss, Curados, Projetos, Disponíveis e loja.
+2. ~~Fotos do zip~~ entraram em 08/10 (53). Lista, títulos, região, estilos e recorte de cada uma em `../_ref/portfolio.py`; rodar `python _ref/portfolio.py` regera `assets/img/port/`. Conferir com ele os nomes que dei às peças e se quer separar as curadas.
 3. **Número do WhatsApp** com DDI em `js/main.js` → `whatsappNumber`. Sem ele, o site copia a mensagem e abre o link da bio.
 4. **Bio** em 2 ou 3 frases e uma definição de tatupunk nas palavras dele.
 5. **Valores**: valor mínimo ou faixa; sinal e remarcação.

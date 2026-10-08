@@ -314,15 +314,13 @@ p:last-child { margin-bottom: 0; }
 @media (min-width: 1080px) { .flyers--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
 .flyer {
-  --r: -1.5deg; position: relative; display: block; text-decoration: none; text-align: left;
+  --r: -.8deg; position: relative; display: block; text-decoration: none; text-align: left;
   background: var(--paper); color: var(--ink); padding: 7px 7px 10px; border: 0; cursor: pointer; width: 100%;
   transform: rotate(var(--r));
   box-shadow: 0 14px 30px rgba(0,0,0,.5);
   transition: transform .5s var(--spring), box-shadow .4s var(--ease);
 }
-.flyer:nth-child(3n+2) { --r: 1.8deg; }
-.flyer:nth-child(3n+3) { --r: -.6deg; }
-.flyer:nth-child(4n+4) { --r: 2.4deg; }
+.flyer:nth-child(even) { --r: .8deg; }
 .flyer::before {
   content: ""; position: absolute; z-index: 2; top: -11px; left: 50%; width: 58px; height: 22px;
   transform: translateX(-50%) rotate(calc(var(--r) * -3));
@@ -334,7 +332,7 @@ p:last-child { margin-bottom: 0; }
 .flyer__img { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--ink-3); }
 .flyer__img img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.05) saturate(1.05); transition: transform .8s var(--ease); }
 .flyer:hover .flyer__img img { transform: scale(1.05); }
-.flyer__cap { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 9px 3px 0; font: 600 .72rem/1.25 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; }
+.flyer__cap { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 9px 3px 0; font: 600 .72rem/1.25 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; }
 .flyer__cap em { font-style: normal; color: var(--blood); white-space: nowrap; }
 .flyer.is-hidden { display: none; }
 
@@ -342,6 +340,12 @@ p:last-child { margin-bottom: 0; }
 .js .flyers .flyer { opacity: 0; transform: rotate(calc(var(--r) * 5)) scale(1.18) translateY(-12px); }
 .js .flyers .flyer.is-in { opacity: 1; transform: rotate(var(--r)); transition: transform .75s var(--spring), opacity .25s linear, box-shadow .4s var(--ease); }
 .js .flyers .flyer.is-in:hover { transform: rotate(0deg) translateY(-6px) scale(1.02); }
+
+.flyer__cap span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flyer__cap span, .flyer__cap em { max-width: 100%; }
+.flyer__cap em { flex: none; font-weight: 500; }
+.more { text-align: center; margin-top: 44px; }
+.more[hidden] { display: none; }
 
 /* cartaz vazio, esperando foto do zip */
 .flyer--empty .flyer__img { display: grid; place-items: center; align-content: center; gap: 10px; background: repeating-linear-gradient(-45deg, #e3dccf 0 10px, #d9d1c3 10px 20px); color: var(--ink); text-align: center; padding: 12px; }
@@ -558,5 +562,5 @@ dialog[open] { animation: dlg-in .45s var(--ease); }
 .section__head .tag, .page-head .tag { margin-bottom: 4px; }
 @media (max-width: 759px) {
   /* item sozinho na última linha fica centralizado */
-  .flyers > .flyer:nth-child(n+3):last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - clamp(7px, 2vw, 16px)); }
+  .flyers > .flyer.is-solo { grid-column: 1 / -1; justify-self: center; width: calc(50% - clamp(7px, 2vw, 16px)); }
 }

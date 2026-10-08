@@ -186,23 +186,46 @@
     face.addEventListener("animationend", (e) => { if (e.animationName === "face-hop") face.classList.remove("is-mad"); });
   });
 
-  /* ---------- Portfólio: filtros ---------- */
+  /* ---------- Portfólio: filtros + "ver mais" ---------- */
   const filters = document.querySelectorAll(".filter");
-  const items = document.querySelectorAll("[data-grid] .flyer");
+  const items = [...document.querySelectorAll("[data-grid] .flyer")];
+  const moreBtn = document.querySelector("[data-more]");
+  const STEP = 12;
+  let cat = "all", shown = STEP;
+  const cols = () => getComputedStyle(document.querySelector("[data-grid]")).gridTemplateColumns.split(" ").length;
+  const render = (animate) => {
+    const match = items.filter((it) => cat === "all" || (it.dataset.cat || "").split(" ").includes(cat));
+    const limit = cat === "all" ? shown : match.length;
+    items.forEach((it) => { it.classList.add("is-hidden"); it.classList.remove("is-solo"); });
+    const vis = match.slice(0, limit);
+    vis.forEach((it, i) => {
+      it.classList.remove("is-hidden");
+      if (animate && !reduceMotion) { it.classList.remove("is-in"); void it.offsetWidth; setTimeout(() => it.classList.add("is-in"), (i % 6) * 60); }
+    });
+    // última sozinha na linha fica centralizada (grade simétrica)
+    if (vis.length % cols() === 1 && cols() === 2) vis[vis.length - 1].classList.add("is-solo");
+    if (moreBtn) moreBtn.parentElement.hidden = limit >= match.length;
+  };
   if (filters.length && items.length) {
     filters.forEach((btn) => {
-      const cat = btn.dataset.filter;
-      const n = cat === "all" ? items.length : [...items].filter((it) => (it.dataset.cat || "").split(" ").includes(cat)).length;
+      const c = btn.dataset.filter;
+      const n = c === "all" ? items.length : items.filter((it) => (it.dataset.cat || "").split(" ").includes(c)).length;
       const sup = document.createElement("sup"); sup.textContent = n; btn.appendChild(sup);
       btn.addEventListener("click", () => {
         filters.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-        items.forEach((it) => {
-          const match = cat === "all" || (it.dataset.cat || "").split(" ").includes(cat);
-          it.classList.toggle("is-hidden", !match);
-          if (match && !reduceMotion) { it.classList.remove("is-in"); void it.offsetWidth; it.classList.add("is-in"); }
-        });
+        cat = c; shown = STEP; render(true);
       });
     });
+    moreBtn?.addEventListener("click", () => {
+      const from = shown; shown += STEP; render(false);
+      items.filter((it) => !it.classList.contains("is-hidden")).slice(from).forEach((it, i) => {
+        if (reduceMotion) { it.classList.add("is-in"); return; }
+        it.classList.remove("is-in"); void it.offsetWidth; setTimeout(() => it.classList.add("is-in"), (i % 6) * 60);
+      });
+    });
+    render(false);
+    let lastCols = cols();
+    window.addEventListener("resize", () => { if (cols() !== lastCols) { lastCols = cols(); render(false); } }, { passive: true });
   }
 
   /* ---------- Lightbox ---------- */
@@ -212,7 +235,7 @@
     const title = lb.querySelector("[data-lb-title]");
     const sub = lb.querySelector("[data-lb-sub]");
     const cta = lb.querySelector("[data-lb-cta]");
-    document.querySelectorAll("[data-grid] .flyer:not(.flyer--empty)").forEach((w) => {
+    document.querySelectorAll("[data-grid] .flyer").forEach((w) => {
       w.addEventListener("click", (e) => {
         e.preventDefault();
         const src = w.querySelector("img");
