@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik+Dirt&family=Sedgwick+Ave+Display&family=Unbounded:wght@800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261008c">
+  <link rel="stylesheet" href="css/style.css?v=20261008e">
   <script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
@@ -79,7 +79,11 @@
 
 <section class="section">
   <div class="wrap cta-end">
-    <img src="assets/brand/face.png" alt="" width="160" height="160" style="width:160px">
+    <div class="face" role="img" aria-label="Carinha do Samtto" title="Clica nele">
+  <img class="face__base" src="assets/brand/face/base.webp" alt="" width="600" height="600">
+  <span class="face__eye face__eye--l" aria-hidden="true"><span class="face__look"><img class="face__pupil" src="assets/brand/face/pupil-l.png" alt="" width="600" height="600"></span></span>
+  <span class="face__eye face__eye--r" aria-hidden="true"><span class="face__look"><img class="face__pupil" src="assets/brand/face/pupil-r.png" alt="" width="600" height="600"></span></span>
+</div>
     <h1 class="display display--xl">404</h1>
     <p class="lead muted">Essa página não existe. Ou já foi tatuada.</p>
     <a class="btn" href="index.html">Voltar pro início <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
@@ -122,6 +126,6 @@
     </div>
   </div>
 </footer>
-<script src="js/main.js?v=20261008c" defer></script>
+<script src="js/main.js?v=20261008e" defer></script>
 </body>
 </html>

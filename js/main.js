@@ -126,6 +126,11 @@
     els.forEach((el) => {
       if (opts.parent) { el.parentElement._scan = el; io.observe(el.parentElement); } else io.observe(el);
     });
+    // o que já nasce na tela entra sem depender do observer
+    setTimeout(() => els.forEach((el) => {
+      const r = (opts.parent ? el.parentElement : el).getBoundingClientRect();
+      if (r.top < innerHeight * .92 && r.bottom > 0) el.classList.add("is-in");
+    }), 120);
   };
   // flyers de uma mesma grade entram em sequência
   document.querySelectorAll(".flyers").forEach((g) => g.querySelectorAll(".flyer").forEach((f, i) => { f.dataset.i = i % 4; }));
@@ -137,6 +142,48 @@
   /* ---------- Marca do hero: entra depois do primeiro quadro ---------- */
   document.querySelectorAll(".wordmark").forEach((w) => {
     setTimeout(() => w.classList.add("is-in"), 150);
+  });
+
+  /* ---------- Carinha: pupilas seguem o mouse/dedo, clique faz pular ---------- */
+  document.querySelectorAll(".face").forEach((face) => {
+    const looks = face.querySelectorAll(".face__look");
+    let tx = 0, ty = 0, x = 0, y = 0, raf = 0, lastMove = 0;
+    const onScreen = () => { const r = face.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
+    const step = () => {
+      x += (tx - x) * .22; y += (ty - y) * .22;
+      looks.forEach((l) => { l.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px)`; });
+      raf = Math.abs(tx - x) + Math.abs(ty - y) > .05 ? requestAnimationFrame(step) : 0;
+    };
+    const aim = (dx, dy) => {
+      const size = face.offsetWidth;
+      // o olho é estreito embaixo: desce menos do que sobe pra pupila não sumir no contorno
+      tx = dx * size * .026; ty = dy * size * (dy > 0 ? .008 : .014);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(step);
+    };
+    // aponta para um ponto da tela (-1..1 em cada eixo, saturando longe da cara)
+    const lookAt = (px, py) => {
+      const r = face.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height * .45;
+      const a = Math.atan2(py - cy, px - cx);
+      const d = Math.min(1, Math.hypot(px - cx, py - cy) / (r.width * 1.2));
+      aim(Math.cos(a) * d, Math.sin(a) * d);
+    };
+    if (!reduceMotion) {
+      window.addEventListener("pointermove", (e) => { lastMove = Date.now(); if (onScreen()) lookAt(e.clientX, e.clientY); }, { passive: true });
+      window.addEventListener("touchstart", (e) => { const t = e.touches[0]; lastMove = Date.now(); if (t && onScreen()) lookAt(t.clientX, t.clientY); }, { passive: true });
+      // sem mouse (celular parado): olhadas de canto de vez em quando
+      setInterval(() => {
+        if (!onScreen() || Date.now() - lastMove < 2500) return;
+        aim(Math.random() * 2 - 1, Math.random() * 1.4 - .7);
+      }, 2200);
+    }
+    face.addEventListener("click", (e) => {
+      lookAt(e.clientX, e.clientY);
+      face.classList.remove("is-mad"); void face.offsetWidth; face.classList.add("is-mad");
+      if (navigator.vibrate) navigator.vibrate(25);
+    });
+    face.addEventListener("animationend", (e) => { if (e.animationName === "face-hop") face.classList.remove("is-mad"); });
   });
 
   /* ---------- Portfólio: filtros ---------- */

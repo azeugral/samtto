@@ -94,7 +94,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
 /* ============================================================
    TIPOGRAFIA
    ============================================================ */
-.display { font-family: var(--f-display); font-weight: 400; line-height: .92; letter-spacing: .01em; text-transform: uppercase; margin: 0; }
+.display { font-family: var(--f-display); font-weight: 400; line-height: 1.02; padding-top: .08em; letter-spacing: .01em; text-transform: uppercase; margin: 0; }
 .display--xl { font-size: clamp(3rem, 15vw, 8rem); }
 .display--l { font-size: clamp(2.4rem, 11vw, 5.4rem); }
 .display--m { font-size: clamp(1.9rem, 8vw, 3.4rem); }
@@ -271,10 +271,10 @@ p:last-child { margin-bottom: 0; }
   transform: rotate(-7deg); text-shadow: 2px 2px 0 var(--ink);
 }
 /* entrada: estêncil passando, depois o vermelho "escorrega" pro registro torto e a tag é pichada */
-.js .wordmark__txt { clip-path: inset(0 100% 0 0); }
+.js .wordmark__txt { clip-path: inset(-30% 100% -20% -10%); }
 .js .wordmark__txt::before { transform: translate(0, 0); }
 .js .wordmark__tag { opacity: 0; transform: rotate(-7deg) scale(1.35); filter: blur(6px); }
-.js .wordmark.is-in .wordmark__txt { clip-path: inset(-10% -10% -10% -10%); transition: clip-path .7s steps(7, end); }
+.js .wordmark.is-in .wordmark__txt { clip-path: inset(-30% -10% -20% -10%); transition: clip-path .7s steps(7, end); }
 .js .wordmark.is-in .wordmark__txt::before { transform: translate(.055em, .05em); transition: transform .6s var(--spring) .65s; }
 .js .wordmark.is-in .wordmark__tag { opacity: 1; transform: rotate(-7deg) scale(1); filter: blur(0); transition: opacity .25s linear 1.05s, transform .5s var(--spring) 1.05s, filter .4s var(--ease) 1.05s; }
 
@@ -288,8 +288,8 @@ p:last-child { margin-bottom: 0; }
 /* ============================================================
    REVEAL: xerox passando (barra de luz varre e a cópia aparece)
    ============================================================ */
-.js .scan { position: relative; clip-path: inset(0 100% 0 0); }
-.js .scan.is-in { clip-path: inset(0 0 0 0); transition: clip-path .9s steps(9, end); }
+.js .scan { position: relative; clip-path: inset(-30% 100% -20% -6%); }
+.js .scan.is-in { clip-path: inset(-30% -6% -20% -6%); transition: clip-path .9s steps(9, end); }
 .js .scan::after {
   content: ""; position: absolute; top: -10%; bottom: -10%; left: 0; width: 18%;
   background: linear-gradient(90deg, transparent, rgba(236,230,218,.0) 10%, rgba(236,230,218,.85) 50%, rgba(236,230,218,0) 90%, transparent);
@@ -382,6 +382,34 @@ p:last-child { margin-bottom: 0; }
 @keyframes bob { to { transform: translateY(-8px); } }
 .place__info { padding: 24px 20px; display: flex; flex-direction: column; gap: 14px; }
 .place__info .head { font-size: 1.3rem; }
+
+
+/* ============================================================
+   CARINHA: o desenho original em camadas (base + pupilas)
+   as pupilas andam só dentro do branco do olho (máscara)
+   ============================================================ */
+.face { position: relative; width: clamp(150px, 44vw, 220px); aspect-ratio: 1; margin-inline: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; transform-origin: 50% 85%; }
+.face > img, .face__eye, .face__look, .face__pupil { position: absolute; inset: 0; width: 100%; height: 100%; }
+.face img { pointer-events: none; -webkit-user-drag: none; }
+.face__eye { -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+.face__eye--l { -webkit-mask-image: url(../assets/brand/face/eye-l.png); mask-image: url(../assets/brand/face/eye-l.png); }
+.face__eye--r { -webkit-mask-image: url(../assets/brand/face/eye-r.png); mask-image: url(../assets/brand/face/eye-r.png); }
+.face__look { will-change: transform; }
+.face__eye--l .face__pupil { transform-origin: 24.7% 46.8%; }
+.face__eye--r .face__pupil { transform-origin: 72.1% 44.4%; }
+.face:hover { animation: face-wobble .5s var(--ease); }
+.face.is-mad { animation: face-hop .62s var(--ease-io); }
+.face.is-mad .face__pupil { animation: pupil-rage .62s var(--ease-io); }
+@keyframes face-wobble { 30% { transform: rotate(-3deg); } 65% { transform: rotate(2deg); } }
+@keyframes face-hop {
+  0% { transform: none; }
+  18% { transform: scale(1.12, .84); }
+  42% { transform: translateY(-16%) scale(.92, 1.1) rotate(-4deg); }
+  58% { transform: translateY(-16%) scale(.95, 1.06) rotate(4deg); }
+  78% { transform: scale(1.08, .9); }
+  100% { transform: none; }
+}
+@keyframes pupil-rage { 0%, 100% { transform: none; } 20%, 70% { transform: scale(.55, .8); } }
 
 .cta-end { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 22px; }
 .cta-end .display { max-width: 12ch; }
