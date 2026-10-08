@@ -157,7 +157,7 @@
     const aim = (dx, dy) => {
       const size = face.offsetWidth;
       // o olho é estreito embaixo: desce menos do que sobe pra pupila não sumir no contorno
-      tx = dx * size * .026; ty = dy * size * (dy > 0 ? .008 : .014);
+      tx = dx * size * .03; ty = dy * size * (dy > 0 ? .009 : .016);
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(step);
     };
@@ -166,7 +166,7 @@
       const r = face.getBoundingClientRect();
       const cx = r.left + r.width / 2, cy = r.top + r.height * .45;
       const a = Math.atan2(py - cy, px - cx);
-      const d = Math.min(1, Math.hypot(px - cx, py - cy) / (r.width * 1.2));
+      const d = Math.min(1, Math.hypot(px - cx, py - cy) / (r.width * .7));
       aim(Math.cos(a) * d, Math.sin(a) * d);
     };
     if (!reduceMotion) {
