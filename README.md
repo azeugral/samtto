@@ -7,14 +7,12 @@ Publicado em https://azeugral.github.io/samtto/
 
 | Página | Conteúdo | Destaque do Instagram |
 |---|---|---|
-| `index.html` | Apresentação, ficha, amostra de tatuagens e disponíveis, como agendar, local, CTA | — |
+| `index.html` | Apresentação, ficha, amostra de tatuagens, como agendar, local, CTA | — |
 | `portfolio.html` | Tatuagens com filtros + lightbox ("Quero algo assim" leva ao agendar) | TATUSS, CURADOS, PROJETOS |
-| `disponiveis.html` | Folhas de flash, botão "Reservar desta folha" (WhatsApp) | DISPONÍVEIS, 150$-200$ |
-| `loja.html` | Camiseta (pré-venda), quadros e prints, mini-checkout no WhatsApp | PRINTS/QUADROS |
 | `papo.html` | Perguntas frequentes | PAPO/IDEIAS |
 | `orcamento.html` | Formulário que monta a mensagem e abre o WhatsApp | AGENDAR / PARCERIAS (bio) |
 
-Configuração do cliente (WhatsApp, agenda do mês) fica no topo de `js/main.js`, no objeto `CONFIG`.
+Configuração do cliente (WhatsApp, upload da imagem de referência) fica no topo de `js/main.js`, no objeto `CONFIG`.
 As páginas são geradas por `../_ref/build.py` (header e footer iguais em todas): editar o script e rodar `python _ref/build.py` na pasta do projeto.
 
 ## Identidade
@@ -23,8 +21,14 @@ As páginas são geradas por `../_ref/build.py` (header e footer iguais em todas
 - Fontes: **Rubik Dirt** (títulos, carimbo de xerox), **Sedgwick Ave Display** (rabiscos/tags), Unbounded 800 (subtítulos), IBM Plex Sans (texto), JetBrains Mono (rótulos e botões).
 - Raio zero. Botão principal é uma fita vermelha com as pontas rasgadas.
 - Fundo único: uma camada fixa com chamas tribais vermelhas que andam com a rolagem, arame farpado e grão de xerox.
-- Mascote: a carinha vermelha dos destaques, redesenhada em SVG (olhos seguem o dedo/mouse, tocar faz rosnar). Também é o favicon, sem fundo.
-- Animações: título em colagem (bilhete de sequestro) que entra batendo e se re-cola no toque; títulos aparecem como cópia de xerox passando; trabalhos são cartazes colados com fita que "batem" na parede; fitas em X (como o destaque CURADOS); arame que se desenha; troca de página com rasgo (View Transitions).
+- Logo oficial (`assets/brand/logo.webp`, original em `../_ref/brand/Logo.jpg`) e a face original no rodapé, no 404 e no favicon sem fundo (`assets/brand/face.png`, original em `../_ref/brand/Face.png`).
+- Marca do hero: SAMTTO em papel com o vermelho deslocado por baixo (serigrafia fora de registro) e "tatupunk" pichado por cima. Entra como estêncil, o vermelho escorrega pro lugar e a tag aparece por último.
+- Outras animações: títulos aparecem como cópia de xerox passando; trabalhos são cartazes colados com fita que "batem" na parede; arame que se desenha; troca de página com rasgo (View Transitions).
+- Retirado em 08/10 a pedido: fitas em X, status da agenda no hero, página e seção de disponíveis, loja, carinha interativa.
+
+## Imagem de referência no agendar
+
+O WhatsApp não aceita anexo por link (`wa.me`), então a imagem sobe para o **Cloudinary** (preset unsigned, plano grátis) e o link entra no texto da mensagem, como no site do Maronez. Configurar `cloudinaryCloud` e `cloudinaryPreset` em `js/main.js`. Enquanto estiver vazio, a mensagem abre com "mando a imagem em seguida" e a pessoa anexa pelo clipe.
 
 ## Dados extraídos do Instagram (08/10/2026)
 
@@ -44,13 +48,13 @@ As páginas são geradas por `../_ref/build.py` (header e footer iguais em todas
 
 Buscar `todo` / `a preencher` nas páginas e `CONFIRMAR` no código.
 
-1. **Logo** em alta, de preferência PNG sem fundo (o atual `assets/brand/logo.png` é a foto de perfil ampliada, 150 px).
+1. ~~Logo em alta~~ recebido em 08/10.
 2. **Fotos do zip** em `assets/img/` (hoje são as miniaturas do Instagram): Tatuss, Curados, Projetos, Disponíveis e loja.
 3. **Número do WhatsApp** com DDI em `js/main.js` → `whatsappNumber`. Sem ele, o site copia a mensagem e abre o link da bio.
 4. **Bio** em 2 ou 3 frases e uma definição de tatupunk nas palavras dele.
-5. **Valores**: a faixa R$ 150–200 vale para todos os disponíveis? Tamanho? Sinal e remarcação.
-6. **Disponíveis**: o que já foi tatuado; cada desenho sai uma vez só?
-7. **Loja**: lista de quadros e prints, preços, frete ou retirada.
+5. **Valores**: valor mínimo ou faixa; sinal e remarcação.
+6. **Upload da imagem**: preset unsigned do Cloudinary (`cloudinaryCloud` / `cloudinaryPreset`).
+7. **Disponíveis e loja**: voltam se ele quiser (o código ficou no histórico do git).
 8. **Endereço e horário** do Maniva (ou só "endereço no chat", por ser estúdio privado). Com endereço entra o mapa.
 9. **Guest spots** fora de Manaus e **cuidados** pós-tattoo.
 10. **Domínio** (trocar `SITE` em `_ref/build.py`, canonical, sitemap e robots).

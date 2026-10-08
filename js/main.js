@@ -11,8 +11,10 @@
     whatsappMessageLink: "https://wa.me/message/QKAXWV63BVPDD1",
     instagram: "https://www.instagram.com/ssamtto/",
     estudio: "https://www.instagram.com/manivatattoo/",
-    // Aparece no topo da home. Vazio = some.
-    agenda: "Agenda de outubro aberta|vagas de 01 a 10/10",
+    // Upload da imagem de referência (preset unsigned do Cloudinary). CONFIRMAR: criar o preset.
+    // Vazio = a pessoa anexa a imagem pelo clipe do WhatsApp.
+    cloudinaryCloud: "",
+    cloudinaryPreset: "",
   };
   window.SAMTTO = CONFIG;
 
@@ -61,14 +63,6 @@
       e.preventDefault();
       abreWa(a.dataset.wa);
     });
-  });
-
-  /* ---------- Status da agenda ---------- */
-  document.querySelectorAll("[data-agenda]").forEach((el) => {
-    if (!CONFIG.agenda) { el.remove(); return; }
-    const [a, b] = CONFIG.agenda.split("|");
-    el.querySelector("[data-agenda-a]").textContent = a;
-    el.querySelector("[data-agenda-b]").textContent = b || "";
   });
 
   /* ---------- Logo: se a imagem não existir, cai no monograma ---------- */
@@ -140,37 +134,9 @@
   watch(".wire", { threshold: .5 });
   watch(".flyers .flyer", { stagger: 90, threshold: .12 });
 
-  /* ---------- Título em colagem: entra batendo; tocar re-cola as letras ---------- */
-  document.querySelectorAll(".ransom").forEach((r) => {
-    requestAnimationFrame(() => setTimeout(() => r.classList.add("is-in"), 120));
-    setTimeout(() => r.classList.add("is-settled"), 1400);
-    r.addEventListener("click", () => {
-      if (reduceMotion) return;
-      r.querySelectorAll(".ransom__c").forEach((c) => {
-        const deg = (Math.random() * 16 - 8).toFixed(1);
-        c.style.setProperty("--rot", `${deg}deg`);
-      });
-    });
-  });
-
-  /* ---------- Mascote: olhos seguem o dedo/mouse, tocar faz rosnar ---------- */
-  document.querySelectorAll(".mascot").forEach((m) => {
-    const pupils = m.querySelectorAll(".m-pupil");
-    const look = (x, y) => {
-      const r = m.getBoundingClientRect();
-      const cx = r.left + r.width / 2, cy = r.top + r.height * .45;
-      const a = Math.atan2(y - cy, x - cx);
-      const d = Math.min(1, Math.hypot(x - cx, y - cy) / 300);
-      pupils.forEach((p) => { p.style.transform = `translate(${(Math.cos(a) * 3.2 * d).toFixed(2)}px, ${(Math.sin(a) * 2.6 * d).toFixed(2)}px)`; });
-    };
-    if (!reduceMotion) {
-      window.addEventListener("pointermove", (e) => look(e.clientX, e.clientY), { passive: true });
-      window.addEventListener("touchstart", (e) => { const t = e.touches[0]; if (t) look(t.clientX, t.clientY); }, { passive: true });
-    }
-    m.addEventListener("click", () => {
-      m.classList.remove("is-mad"); void m.offsetWidth; m.classList.add("is-mad");
-      if (navigator.vibrate) navigator.vibrate(30);
-    });
+  /* ---------- Marca do hero: entra depois do primeiro quadro ---------- */
+  document.querySelectorAll(".wordmark").forEach((w) => {
+    setTimeout(() => w.classList.add("is-in"), 150);
   });
 
   /* ---------- Portfólio: filtros ---------- */
@@ -214,14 +180,6 @@
     lb.addEventListener("click", (e) => { if (e.target === lb || e.target.classList.contains("lightbox__in")) lb.close(); });
   }
 
-  /* ---------- Disponíveis: reservar uma folha ---------- */
-  document.querySelectorAll("[data-reserve]").forEach((b) => {
-    b.addEventListener("click", (e) => {
-      e.preventDefault();
-      abreWa(`Salve Samtto! Quero reservar um desenho disponível: ${b.dataset.reserve}. Qual o valor e as datas livres?`);
-    });
-  });
-
   /* ---------- FAQ: abre e fecha com altura animada ---------- */
   document.querySelectorAll(".faq details").forEach((d) => {
     const summary = d.querySelector("summary");
@@ -246,60 +204,34 @@
     });
   });
 
-  /* ---------- Loja: mini-checkout que fecha no WhatsApp ---------- */
-  const co = document.querySelector(".checkout");
-  if (co) {
-    const form = co.querySelector("form");
-    const money = (v) => "R$ " + v.toLocaleString("pt-BR");
-    let item = { name: "", price: 0, sizes: "" };
-    document.querySelectorAll("[data-order]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        item = { name: btn.dataset.name, price: Number(btn.dataset.price) || 0, sizes: btn.dataset.sizes || "" };
-        co.querySelector("[data-co-name]").textContent = item.name;
-        co.querySelector("[data-co-price]").textContent = item.price ? money(item.price) : "valor a combinar";
-        const im = co.querySelector("[data-co-img]"); im.src = btn.dataset.img; im.alt = item.name;
-        const sizes = co.querySelector("[data-co-sizes]");
-        sizes.hidden = !item.sizes;
-        sizes.querySelector(".chips").innerHTML = item.sizes.split(",").filter(Boolean).map((s, i) =>
-          `<label class="chip"><input type="radio" name="tam" value="${s}"${i === 0 ? " checked" : ""}><span>${s}</span></label>`).join("");
-        form.reset();
-        if (item.sizes) sizes.querySelector("input").checked = true;
-        form.querySelectorAll(".is-invalid").forEach((f) => f.classList.remove("is-invalid"));
-        co.showModal();
-      });
-    });
-    co.querySelector(".x-close").addEventListener("click", () => co.close());
-    co.addEventListener("click", (e) => { if (e.target === co || e.target.classList.contains("checkout__in")) co.close(); });
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nome = form.querySelector("#co-nome");
-      const bad = !nome.value.trim();
-      nome.closest(".field").classList.toggle("is-invalid", bad);
-      if (bad) { nome.focus(); return; }
-      const tam = form.querySelector('input[name="tam"]:checked')?.value;
-      const cidade = form.querySelector("#co-cidade").value.trim();
-      const msg = [
-        `Salve Samtto! Quero: ${item.name}` + (item.price ? ` (${money(item.price)})` : ""),
-        tam && `Tamanho: ${tam}`,
-        `Nome: ${nome.value.trim()}`,
-        cidade && `Cidade: ${cidade}`,
-        "Como faço o pagamento e a retirada/envio?",
-      ].filter(Boolean).join("\n");
-      abreWa(msg);
-      co.close();
-    });
-  }
+  /* ---------- Reduz a foto (celular manda 4 MB ou mais) ---------- */
+  const reduz = async (file, type = "image/jpeg") => {
+    const bitmap = await createImageBitmap(file);
+    const s = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
+    const cv = document.createElement("canvas");
+    cv.width = Math.round(bitmap.width * s); cv.height = Math.round(bitmap.height * s);
+    cv.getContext("2d").drawImage(bitmap, 0, 0, cv.width, cv.height);
+    return new Promise((r) => cv.toBlob(r, type, .85));
+  };
+
+  /* ---------- Sobe a imagem e devolve o link (vai dentro da mensagem) ---------- */
+  const enviaImagem = async (file) => {
+    if (!CONFIG.cloudinaryCloud || !CONFIG.cloudinaryPreset) return "";
+    try {
+      const dados = new FormData();
+      dados.append("file", await reduz(file), `samtto-${Date.now()}.jpg`);
+      dados.append("upload_preset", CONFIG.cloudinaryPreset);
+      const resp = await fetch(`https://api.cloudinary.com/v1_1/${CONFIG.cloudinaryCloud}/image/upload`, { method: "POST", body: dados });
+      if (!resp.ok) return "";
+      return (await resp.json()).secure_url || "";
+    } catch (e) { return ""; }
+  };
 
   /* ---------- Copia a imagem de referência ---------- */
   const copiaImagem = async (file) => {
     try {
       if (!navigator.clipboard || !window.ClipboardItem) return false;
-      const bitmap = await createImageBitmap(file);
-      const s = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
-      const cv = document.createElement("canvas");
-      cv.width = Math.round(bitmap.width * s); cv.height = Math.round(bitmap.height * s);
-      cv.getContext("2d").drawImage(bitmap, 0, 0, cv.width, cv.height);
-      const blob = await new Promise((r) => cv.toBlob(r, "image/png"));
+      const blob = await reduz(file, "image/png");
       await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
       return true;
     } catch (e) { return false; }
@@ -342,29 +274,42 @@
       if (!ok) { form.querySelector(".is-invalid input, .is-invalid textarea")?.focus(); return; }
       const v = (id) => (form.querySelector(`#${id}`)?.value || "").trim();
       const pick = (n) => form.querySelector(`input[name="${n}"]:checked`)?.value || "";
-      const msg = [
+      const linhas = [
         "Salve Samtto! Vim pelo site.",
         pick("tipo") && `Quero: ${pick("tipo")}`,
         `Ideia: ${v("ideia")}`,
         v("regiao") && `Região: ${v("regiao")}`,
         pick("tamanho") && `Tamanho: ${pick("tamanho")}`,
         v("ref"),
-        refFile && "Tenho uma imagem de referência, mando aqui em seguida.",
         `Nome: ${v("nome")}`,
-      ].filter(Boolean).join("\n");
-
+      ];
       const hint = form.querySelector("[data-hint]");
-      await abreWa(msg);
-      if (refFile && hint) {
-        const okImg = CONFIG.whatsappNumber ? await copiaImagem(refFile) : false;
-        hint.textContent = okImg
-          ? "Conversa aberta. A imagem está copiada: cola no chat."
-          : CONFIG.whatsappNumber ? "Conversa aberta. Anexa a imagem pelo clipe do WhatsApp." : "Mensagem copiada: cola no chat e depois anexa a imagem pelo clipe.";
-        hint.hidden = false;
-      } else if (!CONFIG.whatsappNumber && hint) {
-        hint.textContent = "Mensagem copiada: é só colar no chat que abriu.";
-        hint.hidden = false;
+      const avisa = (t) => { if (hint) { hint.textContent = t; hint.hidden = false; } };
+
+      const junta = (a) => a.filter(Boolean).join("\n");
+
+      if (!refFile) {
+        await abreWa(junta(linhas));
+        if (!CONFIG.whatsappNumber) avisa("Mensagem copiada: é só colar no chat que abriu.");
+        return;
       }
+
+      // Com imagem: sobe e manda o link dentro da mensagem
+      const botao = form.querySelector('button[type="submit"]');
+      const rotulo = botao.innerHTML;
+      botao.disabled = true; botao.textContent = "Enviando imagem...";
+      const link = await enviaImagem(refFile);
+      botao.disabled = false; botao.innerHTML = rotulo;
+      if (link) {
+        await abreWa(junta([...linhas, `Imagem de referência: ${link}`]));
+        avisa(CONFIG.whatsappNumber ? "Pronto. A imagem foi junto, como link." : "Mensagem copiada com o link da imagem: cola no chat.");
+        return;
+      }
+      // Sem upload configurado ou falha de rede: a pessoa anexa no chat
+      await abreWa(junta([...linhas, "Tenho uma imagem de referência, mando aqui em seguida."]));
+      const copiou = CONFIG.whatsappNumber ? await copiaImagem(refFile) : false;
+      avisa(copiou ? "Conversa aberta. A imagem está copiada: cola no chat."
+        : "Conversa aberta. Anexa a imagem pelo clipe do WhatsApp.");
     });
   }
 })();
