@@ -3,37 +3,28 @@
 Prévia do site do Samtto ([@ssamtto](https://www.instagram.com/ssamtto/)). HTML, CSS e JS puros, sem build no servidor.
 Publicado em https://azeugral.github.io/samtto/
 
-## Estrutura
+## Estrutura (v2, 11/10: formato do invocad0.com com a paleta do Samtto)
 
-| Página | Conteúdo | Destaque do Instagram |
-|---|---|---|
-| `index.html` | Apresentação, ficha, amostra de tatuagens, como agendar, local, CTA | — |
-| `portfolio.html` | 53 tatuagens do zip, filtros por estilo, 12 por vez com "Ver mais", lightbox ("Quero algo assim" leva ao agendar) | TATUSS, PROJETOS |
-| `papo.html` | Perguntas frequentes | PAPO/IDEIAS |
-| `orcamento.html` | Formulário que monta a mensagem e abre o WhatsApp | AGENDAR / PARCERIAS (bio) |
+Home = "desktop" com 9 ícones em pixel art (desenhados em `../_ref/icons.py`, só a paleta dele). Toda página interna segue o mesmo molde: ícone + título sublinhado, sanfonas de informação e o conteúdo.
 
-Configuração do cliente (WhatsApp, upload da imagem de referência) fica no topo de `js/main.js`, no objeto `CONFIG`.
-As páginas são geradas por `../_ref/build.py` (header e footer iguais em todas): editar o script e rodar `python _ref/build.py` na pasta do projeto.
+| Página | Conteúdo |
+|---|---|
+| `index.html` | Marca SAMTTO + desktop de ícones |
+| `disponiveis.html` | Sanfonas (agenda, valores, encomendas, "quero na minha cidade") + folhas de flash com "Reservar desta folha" |
+| `orcamento.html` | Agende sua tattoo: formulário numa janela, mensagem pronta no WhatsApp |
+| `loja.html` | Produtos, "Adicionar" / "Comprar" / "Perguntar valor" |
+| `produto.html?p=id` | Página única de produto: tamanho, quantidade, adicionar ao carrinho |
+| `carrinho.html` | Carrinho (fica salvo no navegador) + finalizar: retirada no Maniva ou envio com CEP, pedido vai pronto pro WhatsApp |
+| `portfolio.html` | Acervo: 53 tattoos, filtros por estilo, 12 por vez |
+| `sobre.html`, `papo.html` | Sobre e dúvidas em sanfonas |
+| `nao-clica.html` | A carinha original interativa (o "Paciência online" do Samtto), conta quantas vezes irritaram ele |
 
-## Identidade
+Produtos: lista `PRODUTOS` em `../_ref/build.py` (gera `js/produtos.js`). `preco: None` = "Consultar". Fontes: Pixelify Sans (interface), IBM Plex Sans (texto), Rubik Dirt + Sedgwick só na marca. v1 guardada em `../_ref/build-v1.py`, `style-v1.css`, `main-v1.js`.
 
-- Paleta: tinta `#0a0808`, papel `#ece6da`, sangue `#c80000` (medido no destaque do perfil), sangue escuro `#7e0c02` (do logo).
-- Fontes: **Rubik Dirt** (títulos, carimbo de xerox), **Sedgwick Ave Display** (rabiscos/tags), Unbounded 800 (subtítulos), IBM Plex Sans (texto), JetBrains Mono (rótulos e botões).
-- Raio zero. Botão principal é uma fita vermelha com as pontas rasgadas.
-- Fundo único: uma camada fixa com chamas tribais vermelhas que andam com a rolagem, arame farpado e grão de xerox.
-- Logo oficial (`assets/brand/logo.webp`, original em `../_ref/brand/Logo.jpg`) e a face original no rodapé, no 404 e no favicon sem fundo (`assets/brand/face.png`, original em `../_ref/brand/Face.png`).
-- Marca do hero: SAMTTO em papel com o vermelho deslocado por baixo (serigrafia fora de registro) e "tatupunk" pichado por cima. Entra como estêncil, o vermelho escorrega pro lugar e a tag aparece por último.
-- Outras animações: títulos aparecem como cópia de xerox passando; trabalhos são cartazes colados com fita que "batem" na parede; arame que se desenha; troca de página com rasgo (View Transitions).
-- Retirado em 08/10 a pedido: fitas em X, status da agenda no hero, página e seção de disponíveis, loja, carinha interativa.
+## Loja: como funciona e próximos passos
 
-## Portfólio
-
-Estilos (filtros): Personagens, Neotribal, Feras e caveiras, Símbolos, Projetos (costas, peito, barriga). Uma peça pode estar em mais de um.
-Todas as fotos saem em 4:5 (640×800 na grade, até 1400 px no lightbox, webp). Fotos com texto, adesivo ou borda (1, 13, 15, 21, 48, 50, 51) têm recorte ajustado para esconder isso.
-
-## Imagem de referência no agendar
-
-O WhatsApp não aceita anexo por link (`wa.me`), então a imagem sobe para o **Cloudinary** (preset unsigned, plano grátis) e o link entra no texto da mensagem, como no site do Maronez. Configurar `cloudinaryCloud` e `cloudinaryPreset` em `js/main.js`. Enquanto estiver vazio, a mensagem abre com "mando a imagem em seguida" e a pessoa anexa pelo clipe.
+Hoje (estático, GitHub Pages): carrinho no navegador → pedido montado → WhatsApp. Ele confirma estoque e frete e manda o pagamento (Pix ou link de cartão).
+Para pagamento automático: (1) link de pagamento do Mercado Pago por produto, ou (2) loja Nuvemshop/Shopify integrada, ou (3) WordPress + WooCommerce + Mercado Pago + Melhor Envio, igual ao invocad0 (precisa de hospedagem paga).
 
 ## Dados extraídos do Instagram (08/10/2026)
 
@@ -57,9 +48,9 @@ Buscar `todo` / `a preencher` nas páginas e `CONFIRMAR` no código.
 2. ~~Fotos do zip~~ entraram em 08/10 (53). Lista, títulos, região, estilos e recorte de cada uma em `../_ref/portfolio.py`; rodar `python _ref/portfolio.py` regera `assets/img/port/`. Conferir com ele os nomes que dei às peças e se quer separar as curadas.
 3. **Número do WhatsApp** com DDI em `js/main.js` → `whatsappNumber`. Sem ele, o site copia a mensagem e abre o link da bio.
 4. **Bio** em 2 ou 3 frases e uma definição de tatupunk nas palavras dele.
-5. **Valores**: valor mínimo ou faixa; sinal e remarcação.
+5. **Valores**: valor mínimo ou faixa; sinal e remarcação; faixa R$ 150–200 dos disponíveis.
 6. **Upload da imagem**: preset unsigned do Cloudinary (`cloudinaryCloud` / `cloudinaryPreset`).
-7. **Disponíveis e loja**: voltam se ele quiser (o código ficou no histórico do git).
+7. **Loja**: preços dos quadros e prints, lista real de produtos, envio (Correios?) e forma de pagamento. **Disponíveis**: marcar folhas já tatuadas.
 8. **Endereço e horário** do Maniva (ou só "endereço no chat", por ser estúdio privado). Com endereço entra o mapa.
 9. **Guest spots** fora de Manaus e **cuidados** pós-tattoo.
 10. **Domínio** (trocar `SITE` em `_ref/build.py`, canonical, sitemap e robots).
