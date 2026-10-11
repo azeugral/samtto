@@ -5,11 +5,11 @@ Publicado em https://azeugral.github.io/samtto/
 
 ## Estrutura (v2, 11/10: formato do invocad0.com com a paleta do Samtto)
 
-Home = logo + "desktop" com 6 ícones em pixel art (desenhados em `../_ref/icons.py`, só a paleta dele). Toda página interna segue o mesmo molde: ícone + título sublinhado, sanfonas de informação e o conteúdo.
+Home = "desktop" com 6 ícones (logo só no topo) em pixel art (desenhados em `../_ref/icons.py`, só a paleta dele). Toda página interna segue o mesmo molde: ícone + título sublinhado, sanfonas de informação e o conteúdo.
 
 | Página | Conteúdo |
 |---|---|
-| `index.html` | Logo + desktop com 6 ícones (2 linhas de 3) |
+| `index.html` | Desktop com 6 ícones (2 linhas de 3); o logo fica só no topo, maior (68px) |
 | `disponiveis.html` | Sanfonas (agenda, valores, encomendas, "quero na minha cidade") + folhas de flash com "Reservar desta folha" |
 | `orcamento.html` | Agende sua tattoo: formulário numa janela, mensagem pronta no WhatsApp |
 | `portfolio.html` | Acervo: 53 tattoos, filtros por estilo, 12 por vez |
