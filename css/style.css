@@ -350,3 +350,29 @@ dialog[open] .win { animation: win-in .32s var(--ease); }
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   .js .desktop .dicon, .js .grid .card { opacity: 1 !important; transform: none !important; }
 }
+
+/* ============================================================
+   LOJA (só aparece com LOJA = True no _ref/build.py)
+   compra fecha no WhatsApp: janelinha pedido.exe
+   ============================================================ */
+.card--sq .card__s { margin-top: -2px; line-height: 1.35; }
+.add { margin-top: auto; min-height: 44px; padding: 8px 12px; font-size: .95rem; width: 100%; }
+[data-shop] .card { cursor: default; }
+[data-shop] .card:hover .card__t { background: none; color: inherit; text-decoration-color: currentColor; }
+.qty { display: inline-flex; align-items: stretch; height: 44px; }
+.qty button { width: 44px; min-height: 44px; padding: 0; font-size: 1.2rem; }
+.qty output { display: grid; place-items: center; min-width: 48px; font: 500 1.05rem var(--f-ui); }
+.co-item { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: center; margin: 0 0 16px; }
+.co-item img { width: 72px; height: 72px; object-fit: cover; }
+.co-item__t { margin: 0; font: 500 1rem/1.25 var(--f-ui); text-transform: uppercase; }
+.co-item__p { margin: 4px 0 0; font: 500 1.1rem var(--f-ui); color: var(--blood); }
+.co-label { font: 500 .95rem var(--f-ui); }
+.co-note { font: 400 .85rem/1.4 var(--f-ui); color: var(--lo); }
+.checkout .win { width: min(100%, 460px); }
+/* janelinha de compra cabe na tela do celular sem rolar */
+.checkout .dlg { padding: 8px; }
+.checkout .win__body { padding: 12px 14px 14px; }
+.checkout .form { gap: 10px; }
+.checkout .co-item { margin-bottom: 10px; }
+.checkout .field { gap: 4px; }
+.checkout { overflow-y: auto; overscroll-behavior: contain; }

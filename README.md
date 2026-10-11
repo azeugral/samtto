@@ -17,7 +17,14 @@ Home = "desktop" com 6 ícones (logo só no topo) em pixel art (desenhados em `.
 
 Loja, carrinho e página "Não clica" saíram em 11/10 (o Samtto ainda não definiu o e-commerce); a versão com loja está guardada em `../_ref/build-v2-loja.py`, `main-v2-loja.js` e `style-v2-loja.css`. Fontes: Pixelify Sans (interface), IBM Plex Sans (texto), Rubik Dirt + Sedgwick só na marca. v1 guardada em `../_ref/build-v1.py`, `style-v1.css`, `main-v1.js`.
 
-## Loja (fora do ar até ele decidir)
+## Loja pelo WhatsApp: pronta, desligada
+
+Gatilho em `../_ref/build.py`: `LOJA = False`. Trocar para `True` e rodar `python _ref/build.py` liga tudo de uma vez: página `loja.html`, ícone Loja na home (vira 9 ícones com Instagram e "Chamar no WhatsApp") e item no menu.
+Compra igual à do Maronez: cada produto tem "Comprar", que abre a janelinha `pedido.exe` (tamanho, quantidade, nome, retirar no Maniva ou envio com CEP) e monta a mensagem pro WhatsApp. Sem carrinho e sem pagamento online. Produto com `preco: None` mostra "Perguntar valor".
+Produtos: lista `PRODUTOS` no mesmo arquivo; fotos quadradas em `../_ref/loja-img/` (copiadas para `assets/img/loja/` só quando a loja está ligada).
+Testar sem mexer no site: `SAMTTO_LOJA=1 SAMTTO_OUT=<pasta-cópia> python _ref/build.py`.
+
+## Loja com carrinho e pagamento online (opções futuras)
 
 Pronta em `_ref/build-v2-loja.py` (estático, GitHub Pages): carrinho no navegador → pedido montado → WhatsApp. Ele confirma estoque e frete e manda o pagamento (Pix ou link de cartão).
 Para pagamento automático: (1) link de pagamento do Mercado Pago por produto, ou (2) loja Nuvemshop/Shopify integrada, ou (3) WordPress + WooCommerce + Mercado Pago + Melhor Envio, igual ao invocad0 (precisa de hospedagem paga).

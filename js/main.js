@@ -214,6 +214,68 @@
     face.addEventListener("animationend", (e) => { if (e.animationName === "face-hop") face.classList.remove("is-mad"); });
   });
 
+
+  /* ---------- Loja: compra fecha no WhatsApp (só existe com LOJA = True) ---------- */
+  const co = $(".checkout");
+  if (co) {
+    const form = $("#form-compra", co);
+    const money = (v) => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: v % 1 ? 2 : 0 });
+    let item = { name: "", price: 0, qty: 1 };
+    const qtyOut = $("[data-co-qty]", co);
+    const envioFields = $$("[data-envio]", co);
+    const syncEntrega = () => {
+      const envio = $('input[name="entrega"]:checked', form).value === "envio";
+      envioFields.forEach((f) => { f.hidden = !envio; });
+      $("#co-cep", form).required = envio;
+    };
+    $$("[data-buy]").forEach((b) => b.addEventListener("click", () => {
+      item = { name: b.dataset.name, price: Number(b.dataset.price) || 0, qty: 1 };
+      $("[data-co-name]", co).textContent = item.name;
+      $("[data-co-price]", co).textContent = money(item.price);
+      const img = $("[data-co-img]", co); img.src = b.dataset.img; img.alt = item.name;
+      const sizes = (b.dataset.sizes || "").split(",").filter(Boolean);
+      const box = $("[data-co-sizes]", co);
+      box.hidden = !sizes.length;
+      $(".chips", box).innerHTML = sizes.map((t, i) => `<label class="chip"><input type="radio" name="tam" value="${t}"${i === 0 ? " checked" : ""}><span class="btn">${t}</span></label>`).join("");
+      form.reset(); qtyOut.textContent = "1";
+      if (sizes.length) $('input[name="tam"]', box).checked = true;
+      $$(".is-invalid", form).forEach((f) => f.classList.remove("is-invalid"));
+      syncEntrega();
+      co.showModal();
+    }));
+    $$("[data-q]", co).forEach((b) => b.addEventListener("click", () => {
+      item.qty = Math.min(20, Math.max(1, item.qty + Number(b.dataset.q))); qtyOut.textContent = item.qty;
+    }));
+    $$('input[name="entrega"]', form).forEach((r) => r.addEventListener("change", syncEntrega));
+    $("#co-cep", form).addEventListener("input", (e) => {
+      const d = e.target.value.replace(/\D/g, "").slice(0, 8);
+      e.target.value = d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
+    });
+    $("[data-close]", co).addEventListener("click", () => co.close());
+    co.addEventListener("click", (e) => { if (e.target === co || e.target.classList.contains("dlg")) co.close(); });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      let ok = true;
+      $$("[required]", form).forEach((f) => {
+        const bad = f.id === "co-cep" ? f.value.replace(/\D/g, "").length !== 8 : !f.value.trim();
+        f.closest(".field").classList.toggle("is-invalid", bad); if (bad) ok = false;
+      });
+      if (!ok) { $(".is-invalid input", form)?.focus(); return; }
+      const tam = $('input[name="tam"]:checked', form)?.value;
+      const envio = $('input[name="entrega"]:checked', form).value === "envio";
+      const cidade = $("#co-cidade", form).value.trim();
+      const linhas = [
+        "Salve Samtto! Quero comprar pela loja do site:",
+        `${item.qty}x ${item.name}${tam ? ` (${tam})` : ""} · ${money(item.price * item.qty)}`,
+        envio ? `Entrega: envio para o CEP ${$("#co-cep", form).value}${cidade ? `, ${cidade}` : ""}` : "Entrega: retiro no Estúdio Maniva",
+        `Nome: ${$("#co-nome", form).value.trim()}`,
+        envio ? "Me passa o frete e a forma de pagamento?" : "Me passa a forma de pagamento?",
+      ];
+      co.close();
+      await abreWa(linhas.join("\n"));
+    });
+  }
+
   /* ---------- Agende: imagem de referência ---------- */
   const reduz = async (file, type = "image/jpeg") => {
     const bitmap = await createImageBitmap(file);
