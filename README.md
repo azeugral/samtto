@@ -5,25 +5,21 @@ Publicado em https://azeugral.github.io/samtto/
 
 ## Estrutura (v2, 11/10: formato do invocad0.com com a paleta do Samtto)
 
-Home = "desktop" com 9 ícones em pixel art (desenhados em `../_ref/icons.py`, só a paleta dele). Toda página interna segue o mesmo molde: ícone + título sublinhado, sanfonas de informação e o conteúdo.
+Home = logo + "desktop" com 6 ícones em pixel art (desenhados em `../_ref/icons.py`, só a paleta dele). Toda página interna segue o mesmo molde: ícone + título sublinhado, sanfonas de informação e o conteúdo.
 
 | Página | Conteúdo |
 |---|---|
-| `index.html` | Marca SAMTTO + desktop de ícones |
+| `index.html` | Logo + desktop com 6 ícones (2 linhas de 3) |
 | `disponiveis.html` | Sanfonas (agenda, valores, encomendas, "quero na minha cidade") + folhas de flash com "Reservar desta folha" |
 | `orcamento.html` | Agende sua tattoo: formulário numa janela, mensagem pronta no WhatsApp |
-| `loja.html` | Produtos, "Adicionar" / "Comprar" / "Perguntar valor" |
-| `produto.html?p=id` | Página única de produto: tamanho, quantidade, adicionar ao carrinho |
-| `carrinho.html` | Carrinho (fica salvo no navegador) + finalizar: retirada no Maniva ou envio com CEP, pedido vai pronto pro WhatsApp |
 | `portfolio.html` | Acervo: 53 tattoos, filtros por estilo, 12 por vez |
 | `sobre.html`, `papo.html` | Sobre e dúvidas em sanfonas |
-| `nao-clica.html` | A carinha original interativa (o "Paciência online" do Samtto), conta quantas vezes irritaram ele |
 
-Produtos: lista `PRODUTOS` em `../_ref/build.py` (gera `js/produtos.js`). `preco: None` = "Consultar". Fontes: Pixelify Sans (interface), IBM Plex Sans (texto), Rubik Dirt + Sedgwick só na marca. v1 guardada em `../_ref/build-v1.py`, `style-v1.css`, `main-v1.js`.
+Loja, carrinho e página "Não clica" saíram em 11/10 (o Samtto ainda não definiu o e-commerce); a versão com loja está guardada em `../_ref/build-v2-loja.py`, `main-v2-loja.js` e `style-v2-loja.css`. Fontes: Pixelify Sans (interface), IBM Plex Sans (texto), Rubik Dirt + Sedgwick só na marca. v1 guardada em `../_ref/build-v1.py`, `style-v1.css`, `main-v1.js`.
 
-## Loja: como funciona e próximos passos
+## Loja (fora do ar até ele decidir)
 
-Hoje (estático, GitHub Pages): carrinho no navegador → pedido montado → WhatsApp. Ele confirma estoque e frete e manda o pagamento (Pix ou link de cartão).
+Pronta em `_ref/build-v2-loja.py` (estático, GitHub Pages): carrinho no navegador → pedido montado → WhatsApp. Ele confirma estoque e frete e manda o pagamento (Pix ou link de cartão).
 Para pagamento automático: (1) link de pagamento do Mercado Pago por produto, ou (2) loja Nuvemshop/Shopify integrada, ou (3) WordPress + WooCommerce + Mercado Pago + Melhor Envio, igual ao invocad0 (precisa de hospedagem paga).
 
 ## Dados extraídos do Instagram (08/10/2026)

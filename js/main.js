@@ -14,11 +14,9 @@
     cloudinaryPreset: "",
   };
   window.SAMTTO = CONFIG;
-  const PRODUTOS = window.SAMTTO_PRODUTOS || [];
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const money = (v) => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: v % 1 ? 2 : 0 });
 
   /* ---------- Toast em janelinha ---------- */
   let toastEl, toastT;
@@ -182,17 +180,6 @@
   }
 
   /* ---------- Carinha: pupilas seguem o mouse/dedo, clique faz pular ---------- */
-  const counter = $("[data-counter]");
-  const KEY_RAIVA = "samtto-raiva";
-  const lerRaiva = () => { try { return Number(localStorage.getItem(KEY_RAIVA)) || 0; } catch (e) { return 0; } };
-  const mostraRaiva = (n) => {
-    if (!counter) return;
-    counter.innerHTML = n === 0 ? "Ninguém irritou ele ainda."
-      : n < 5 ? `Você irritou ele <b>${n}</b> ${n === 1 ? "vez" : "vezes"}.`
-      : n < 15 ? `<b>${n}</b> vezes. Ele tá ficando bravo.`
-      : `<b>${n}</b> vezes. Agora só tatuando pra fazer as pazes. <a class="ulink" href="orcamento.html">Agendar</a>`;
-  };
-  mostraRaiva(lerRaiva());
   $$(".face").forEach((face) => {
     const looks = $$(".face__look", face);
     let tx = 0, ty = 0, x = 0, y = 0, raf = 0, lastMove = 0;
@@ -223,128 +210,9 @@
       lookAt(e.clientX, e.clientY);
       face.classList.remove("is-mad"); void face.offsetWidth; face.classList.add("is-mad");
       if (navigator.vibrate) navigator.vibrate(25);
-      if (counter) { const n = lerRaiva() + 1; try { localStorage.setItem(KEY_RAIVA, n); } catch (err) {} mostraRaiva(n); }
     });
     face.addEventListener("animationend", (e) => { if (e.animationName === "face-hop") face.classList.remove("is-mad"); });
   });
-
-  /* ============================================================
-     LOJA: carrinho guardado no navegador, pedido fecha no WhatsApp
-     ============================================================ */
-  const KEY_CART = "samtto-carrinho";
-  const byId = (id) => PRODUTOS.find((p) => p.id === id);
-  const lerCart = () => { try { return (JSON.parse(localStorage.getItem(KEY_CART)) || []).filter((i) => byId(i.id)); } catch (e) { return []; } };
-  const salvaCart = (c) => { try { localStorage.setItem(KEY_CART, JSON.stringify(c)); } catch (e) {} atualizaHeader(); };
-  const total = (c) => c.reduce((s, i) => s + (byId(i.id).preco || 0) * i.qty, 0);
-  const atualizaHeader = (bump) => {
-    const c = lerCart();
-    const n = c.reduce((s, i) => s + i.qty, 0);
-    $$("[data-cart-total]").forEach((el) => { el.textContent = money(total(c)); });
-    $$("[data-cart-n]").forEach((el) => { el.textContent = n; el.hidden = n === 0; });
-    if (bump) $$(".cart-btn").forEach((b) => { b.classList.remove("is-bump"); void b.offsetWidth; b.classList.add("is-bump"); });
-  };
-  const adiciona = (id, tam = "", qty = 1) => {
-    const c = lerCart();
-    const it = c.find((i) => i.id === id && i.tam === tam);
-    if (it) it.qty = Math.min(20, it.qty + qty); else c.push({ id, tam, qty });
-    salvaCart(c); atualizaHeader(true);
-    toast(`<span>${byId(id).nome}${tam ? ` (${tam})` : ""} no carrinho.</span><a class="btn" href="carrinho.html">Ver</a>`);
-  };
-  atualizaHeader();
-
-  // botões "Adicionar" da grade
-  $$("[data-add]").forEach((b) => b.addEventListener("click", () => adiciona(b.dataset.add)));
-
-  // página de produto (modelo único, ?p=id)
-  const prodRoot = $("[data-product]");
-  if (prodRoot) {
-    const p = byId(new URLSearchParams(location.search).get("p")) || PRODUTOS[0];
-    document.title = `${p.nome} | Samtto Tatupunk`;
-    const im = $("[data-p-img]"); im.src = p.img; im.alt = p.nome;
-    $("[data-p-name]").textContent = p.nome;
-    $("[data-p-price]").textContent = p.preco ? money(p.preco) : "Valor sob consulta";
-    $("[data-p-desc]").textContent = p.desc + (p.nota ? ` ${p.nota}` : "");
-    const sizes = $("[data-p-sizes]");
-    if (p.tamanhos.length) {
-      sizes.hidden = false;
-      $(".sizes", sizes).innerHTML = p.tamanhos.map((t, i) => `<label class="size"><input type="radio" name="tam" value="${t}"${i === 0 ? " checked" : ""}><span class="btn">${t}</span></label>`).join("");
-    }
-    let qty = 1;
-    const out = $("[data-p-qty]");
-    $$("[data-q]").forEach((b) => b.addEventListener("click", () => { qty = Math.min(20, Math.max(1, qty + Number(b.dataset.q))); out.textContent = qty; }));
-    const form = $("[data-p-form]");
-    const addBtn = $("[data-p-add]");
-    if (!p.preco) addBtn.textContent = "Perguntar valor no WhatsApp";
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (!p.preco) { abreWa(`Salve Samtto! Quero saber o valor de: ${p.nome}`); return; }
-      adiciona(p.id, $('input[name="tam"]:checked', form)?.value || "", qty);
-    });
-  }
-
-  // página do carrinho
-  const list = $("[data-cart-list]");
-  if (list) {
-    const render = () => {
-      const c = lerCart();
-      $("[data-cart-empty]").hidden = c.length > 0;
-      $("[data-cart-sumrow]").hidden = c.length === 0;
-      $("[data-checkout]").hidden = c.length === 0;
-      list.innerHTML = c.map((i, k) => {
-        const p = byId(i.id);
-        return `<li class="cart-item"><img src="${p.img}" alt="" width="64" height="64"><div>
-          <div class="cart-item__t">${p.nome}</div><div class="cart-item__s">${i.tam ? `Tamanho ${i.tam} · ` : ""}${p.preco ? money(p.preco) : "valor a combinar"}</div>
-          <div class="cart-item__row"><div class="qty"><button class="btn" type="button" data-k="${k}" data-d="-1" aria-label="Menos">−</button><output class="bevel-in">${i.qty}</output><button class="btn" type="button" data-k="${k}" data-d="1" aria-label="Mais">+</button></div>
-          <button class="btn cart-item__rm" type="button" data-rm="${k}">Remover</button></div></div></li>`;
-      }).join("");
-      $("[data-cart-sum]").textContent = money(total(c));
-    };
-    list.addEventListener("click", (e) => {
-      const b = e.target.closest("button"); if (!b) return;
-      const c = lerCart();
-      if (b.dataset.rm !== undefined) c.splice(Number(b.dataset.rm), 1);
-      else if (b.dataset.k !== undefined) { const it = c[Number(b.dataset.k)]; it.qty = Math.max(1, Math.min(20, it.qty + Number(b.dataset.d))); }
-      salvaCart(c); render();
-    });
-    render();
-
-    const form = $("#form-pedido");
-    const envioFields = $$("[data-envio]", form);
-    const syncEntrega = () => {
-      const envio = $('input[name="entrega"]:checked', form).value === "envio";
-      envioFields.forEach((f) => { f.hidden = !envio; });
-      $("#p-cep").required = envio;
-    };
-    $$('input[name="entrega"]', form).forEach((r) => r.addEventListener("change", syncEntrega));
-    syncEntrega();
-    $("#p-cep").addEventListener("input", (e) => {
-      const d = e.target.value.replace(/\D/g, "").slice(0, 8);
-      e.target.value = d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
-    });
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      let ok = true;
-      $$("[required]", form).forEach((f) => {
-        const bad = f.id === "p-cep" ? f.value.replace(/\D/g, "").length !== 8 : !f.value.trim();
-        f.closest(".field").classList.toggle("is-invalid", bad); if (bad) ok = false;
-      });
-      if (!ok) { $(".is-invalid input", form)?.focus(); return; }
-      const c = lerCart();
-      const envio = $('input[name="entrega"]:checked', form).value === "envio";
-      const linhas = [
-        "Salve Samtto! Pedido pela loja do site:",
-        ...c.map((i) => { const p = byId(i.id); return `${i.qty}x ${p.nome}${i.tam ? ` (${i.tam})` : ""}${p.preco ? ` · ${money(p.preco * i.qty)}` : " · valor a combinar"}`; }),
-        `Subtotal: ${money(total(c))}`,
-        envio ? `Entrega: envio para o CEP ${$("#p-cep").value}${$("#p-cidade").value.trim() ? `, ${$("#p-cidade").value.trim()}` : ""}` : "Entrega: retiro no Estúdio Maniva",
-        `Nome: ${$("#p-nome").value.trim()}`,
-        envio ? "Me passa o frete e a forma de pagamento?" : "Me passa a forma de pagamento?",
-      ];
-      await abreWa(linhas.join("\n"));
-      const hint = $("[data-hint]", form);
-      hint.textContent = CONFIG.whatsappNumber ? "Pedido aberto no WhatsApp. É só enviar." : "Pedido copiado: cola no chat que abriu e envia.";
-      hint.hidden = false;
-    });
-  }
 
   /* ---------- Agende: imagem de referência ---------- */
   const reduz = async (file, type = "image/jpeg") => {
