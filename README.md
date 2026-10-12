@@ -33,7 +33,8 @@ Para pagamento automático: (1) link de pagamento do Mercado Pago por produto, o
 
 - Nome: 💢Samtto💢 · @ssamtto · 2.776 seguidores (não exibidos no site)
 - Bio: Artista · 🇧🇷-🏴‍☠️ · 💢TATUPUNK · 🗣️COMISSÕES ABERTAS · MANAUS @manivatattoo · AGENDAR/PARCERIAS
-- WhatsApp: `wa.me/message/QKAXWV63BVPDD1` (link de mensagem, não aceita texto pronto)
+- WhatsApp: (92) 9 9407-5239 (passado em 12/10; o link da bio `wa.me/message/QKAXWV63BVPDD1` fica de reserva)
+- TikTok: @ssamttoo (passado em 12/10)
 - Estúdio: Maniva (@manivatattoo), "Estúdio privado · Tatuagem autoral · Tatuagem comercial · Manaus - Amazonas"
 - Destaques: PRINTS/QUADROS, DISPONÍVEIS, CURADOS, TATUSS, PAPO/IDEIAS, PROJETOS, 150$-200$ (conteúdo dos destaques exige login, não foi lido)
 - Frases dele usadas no site: "Marque sua pele com tatupunk", "Reserve ou encomende sua ideia na estética punk", "Sai do padrão ae", "Punks not dead"
@@ -49,7 +50,7 @@ Buscar `todo` / `a preencher` nas páginas e `CONFIRMAR` no código.
 
 1. ~~Logo em alta~~ recebido em 08/10.
 2. ~~Fotos do zip~~ entraram em 08/10 (53). Lista, títulos, região, estilos e recorte de cada uma em `../_ref/portfolio.py`; rodar `python _ref/portfolio.py` regera `assets/img/port/`. Conferir com ele os nomes que dei às peças e se quer separar as curadas.
-3. **Número do WhatsApp** com DDI em `js/main.js` → `whatsappNumber`. Sem ele, o site copia a mensagem e abre o link da bio.
+3. ~~Número do WhatsApp~~ recebido em 12/10: (92) 9 9407-5239, em `js/main.js` → `whatsappNumber` (`5592994075239`). Agora a mensagem chega pronta no chat.
 4. **Bio** em 2 ou 3 frases e uma definição de tatupunk nas palavras dele.
 5. **Valores**: valor mínimo ou faixa; sinal e remarcação; faixa R$ 150–200 dos disponíveis.
 6. **Upload da imagem**: preset unsigned do Cloudinary (`cloudinaryCloud` / `cloudinaryPreset`).

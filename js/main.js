@@ -7,7 +7,7 @@
   const CONFIG = {
     // CONFIRMAR: número com DDI (ex.: "5592999999999"). Com ele o WhatsApp abre com a mensagem pronta.
     // Sem ele o site copia a mensagem e abre o link da bio (wa.me/message não aceita texto).
-    whatsappNumber: "",
+    whatsappNumber: "5592994075239", // (92) 9 9407-5239, passado em 12/10
     whatsappMessageLink: "https://wa.me/message/QKAXWV63BVPDD1",
     // Upload da imagem de referência (preset unsigned do Cloudinary). CONFIRMAR: criar o preset.
     cloudinaryCloud: "",
