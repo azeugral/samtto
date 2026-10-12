@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://samtto.com.br/sitemap.xml
+Sitemap: https://azeugral.github.io/samtto/sitemap.xml
