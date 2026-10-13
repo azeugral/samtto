@@ -384,3 +384,10 @@ dialog[open] .win { animation: win-in .32s var(--ease); }
 .cita cite::before { content: "— "; }
 .tg__body ul { padding-left: 18px; }
 .tg__body li + li { margin-top: 4px; }
+
+/* tabela de valores (Agende, Papo) */
+.precos { list-style: none; margin: 0 0 12px; padding: 0 !important; border-top: 1px solid var(--line); }
+.precos li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px dashed var(--line); margin: 0 !important; }
+.precos span { color: var(--paper-dim); }
+.precos b { font: 500 1.02rem var(--f-ui); color: var(--paper); white-space: nowrap; }
+.precos li:last-child b { color: var(--blood); }
