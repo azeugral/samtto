@@ -24,7 +24,7 @@
 | [Início](https://samtto.com.br/) | Desktop com os atalhos do site |
 | [Desenhos disponíveis](https://samtto.com.br/disponiveis.html) | Flashes prontos para tatuar, com reserva pelo WhatsApp |
 | [Agende sua tattoo](https://samtto.com.br/orcamento.html) | Formulário que monta a mensagem e abre o WhatsApp |
-| [Acervo de tattoos](https://samtto.com.br/portfolio.html) | Mais de 50 tatuagens: flashs, encomendas, freehands e projetos grandes |
+| [Acervo de tattoos](https://samtto.com.br/portfolio.html) | Mais de 70 tatuagens: flashs, encomendas, freehands e projetos grandes |
 | [Sobre](https://samtto.com.br/sobre.html) | Quem é, estilo e onde tatua |
 | [Papo e dúvidas](https://samtto.com.br/papo.html) | Como agendar, valores, sinal, pagamento e cuidados |
 
