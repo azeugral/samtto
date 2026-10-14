@@ -10,8 +10,10 @@
     whatsappNumber: "5592994075239", // (92) 9 9407-5239, passado em 12/10
     whatsappMessageLink: "https://wa.me/message/QKAXWV63BVPDD1",
     // Upload da imagem de referência (preset unsigned do Cloudinary). CONFIRMAR: criar o preset.
-    cloudinaryCloud: "",
-    cloudinaryPreset: "",
+    // mesma conta e preset unsigned do Maronez (LRGZ); as imagens do Samtto ficam com o prefixo samtto/
+    cloudinaryCloud: "waj86oks",
+    cloudinaryPreset: "orcamento-maronez",
+    cloudinaryFolder: "samtto",
   };
   window.SAMTTO = CONFIG;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -291,6 +293,7 @@
       const dados = new FormData();
       dados.append("file", await reduz(file), `samtto-${Date.now()}.jpg`);
       dados.append("upload_preset", CONFIG.cloudinaryPreset);
+      if (CONFIG.cloudinaryFolder) dados.append("folder", CONFIG.cloudinaryFolder);
       const resp = await fetch(`https://api.cloudinary.com/v1_1/${CONFIG.cloudinaryCloud}/image/upload`, { method: "POST", body: dados });
       return resp.ok ? ((await resp.json()).secure_url || "") : "";
     } catch (e) { return ""; }
