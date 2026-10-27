@@ -68,7 +68,7 @@
     startRoot.addEventListener("click", (e) => { if (e.target === startRoot) set(false); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") set(false); });
     $$(".start__link", startRoot).forEach((a) => a.addEventListener("click", () => set(false)));
-    const here = location.pathname.split("/").pop() || "index.html";
+    const here = "/" + (location.pathname.split("/").pop() || "").replace(/\.html$/, "").replace(/^index$/, "");
     $$(".start__link", startRoot).forEach((a) => { if ((a.getAttribute("href") || "").split("?")[0] === here) a.setAttribute("aria-current", "page"); });
   }
 
@@ -169,7 +169,7 @@
         $("[data-lb-title]", lb).textContent = nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "_") + ".png";
         $("[data-lb-name]", lb).textContent = nome;
         $("[data-lb-sub]", lb).textContent = c.dataset.sub || "";
-        if (cta) cta.href = `orcamento.html?ref=${encodeURIComponent(nome)}`;
+        if (cta) cta.href = `/orcamento?ref=${encodeURIComponent(nome)}`;
         lb.showModal();
       });
     });
