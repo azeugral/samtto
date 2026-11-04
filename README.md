@@ -23,6 +23,7 @@
 |---|---|
 | [Início](https://samtto.com.br/) | Desktop com os atalhos do site |
 | [Desenhos disponíveis](https://samtto.com.br/disponiveis.html) | Flashes prontos para tatuar, com reserva pelo WhatsApp |
+| [Prints e quadros](https://samtto.com.br/prints) | Prints A4 das artes (R$ 50) e arte sob encomenda (R$ 100), pedido pelo WhatsApp |
 | [Agende sua tattoo](https://samtto.com.br/orcamento.html) | Formulário que monta a mensagem e abre o WhatsApp |
 | [Acervo de tattoos](https://samtto.com.br/portfolio.html) | Tatuagens separadas em flashs, encomendas e freehands |
 | [Sobre](https://samtto.com.br/sobre.html) | Quem é, estilo e onde tatua |
