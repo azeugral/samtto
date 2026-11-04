@@ -233,6 +233,11 @@ p:last-child { margin-bottom: 0; }
 .card__s { font: 400 .85rem/1.2 var(--f-ui); color: var(--paper-dim); margin-top: -4px; }
 .card__price { font: 500 1.05rem/1 var(--f-ui); color: var(--paper); }
 .card.is-hidden { display: none; }
+/* prints: folha A4 inteira, sem cortar (o print deitado fica com faixa) */
+.card--a4 .card__img { aspect-ratio: 210 / 297; }
+.card--a4 .card__img img { object-fit: contain; }
+.capa { margin: 0 0 28px; max-width: 420px; }
+.capa img { width: 100%; height: auto; display: block; box-shadow: inset 0 0 0 1px var(--line); }
 @media (max-width: 719px) { .card.is-solo { grid-column: 1 / -1; justify-self: center; width: calc(50% - 6px); } }
 
 .js .grid .card { opacity: 0; transform: translateY(10px); }

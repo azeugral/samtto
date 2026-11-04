@@ -175,7 +175,8 @@
     });
     reserve?.addEventListener("click", (e) => {
       e.preventDefault();
-      abreWa(`Salve Samtto! Quero reservar um desenho disponível: ${current?.dataset.reserve || ""}. Qual o valor e as datas livres?`);
+      const nome = current?.dataset.reserve || "";
+      abreWa(lb.dataset.lbMsg ? lb.dataset.lbMsg.replace("{nome}", nome) : `Salve Samtto! Quero reservar um desenho disponível: ${nome}. Qual o valor e as datas livres?`);
     });
     $("[data-close]", lb).addEventListener("click", () => lb.close());
     lb.addEventListener("click", (e) => { if (e.target === lb || e.target.classList.contains("dlg")) lb.close(); });
