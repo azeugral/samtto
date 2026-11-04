@@ -5,6 +5,10 @@
 
 @view-transition { navigation: auto; }
 
+/* números em Jersey 10: no Pixelify o 5 parece um S. Só os dígitos 0-9 trocam de fonte */
+@font-face { font-family: "Samtto Num"; src: url("../assets/fonts/jersey-num.woff2") format("woff2");
+  unicode-range: U+30-39; font-display: swap; size-adjust: 125%; }
+
 :root {
   --ink: #0a0808;
   --ink-2: #141010;
@@ -21,7 +25,7 @@
   --lo: #6e685f;
   --edge: #0a0808;
 
-  --f-ui: "Pixelify Sans", "Lucida Console", monospace;
+  --f-ui: "Samtto Num", "Pixelify Sans", "Lucida Console", monospace;
   --f-text: "IBM Plex Sans", system-ui, sans-serif;
   --f-mark: "Rubik Dirt", Impact, sans-serif;
   --f-tag: "Sedgwick Ave Display", cursive;
