@@ -288,6 +288,12 @@ p:last-child { margin-bottom: 0; }
 .upload__name { font-size: .85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .upload__remove { width: 44px; height: 44px; padding: 0; }
 .upload__remove svg { width: 14px; height: 14px; }
+.field__lbl { font: 500 .95rem var(--f-ui); }
+.field__lbl small { font-size: .85rem; color: var(--lo); margin-left: 4px; }
+.mq { padding: 2px; background: var(--ink); }
+.mq iframe { display: block; width: 100%; height: 560px; border: 0; background: var(--ink); }
+@media (max-width: 719px) { .mq iframe { height: 520px; } }
+[data-local].is-on { color: var(--blood-deep); font-family: var(--f-ui); }
 .hint { font: 500 .9rem var(--f-ui); color: var(--blood-deep); }
 
 /* ============================================================

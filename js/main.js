@@ -279,43 +279,18 @@
     });
   }
 
-  /* ---------- Agende: imagem de referência ---------- */
-  const reduz = async (file, type = "image/jpeg") => {
-    const bitmap = await createImageBitmap(file);
-    const s = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
-    const cv = document.createElement("canvas");
-    cv.width = Math.round(bitmap.width * s); cv.height = Math.round(bitmap.height * s);
-    cv.getContext("2d").drawImage(bitmap, 0, 0, cv.width, cv.height);
-    return new Promise((r) => cv.toBlob(r, type, .85));
-  };
-  const enviaImagem = async (file) => {
-    if (!CONFIG.cloudinaryCloud || !CONFIG.cloudinaryPreset) return "";
-    try {
-      const dados = new FormData();
-      dados.append("file", await reduz(file), `samtto-${Date.now()}.jpg`);
-      dados.append("upload_preset", CONFIG.cloudinaryPreset);
-      if (CONFIG.cloudinaryFolder) dados.append("folder", CONFIG.cloudinaryFolder);
-      const resp = await fetch(`https://api.cloudinary.com/v1_1/${CONFIG.cloudinaryCloud}/image/upload`, { method: "POST", body: dados });
-      return resp.ok ? ((await resp.json()).secure_url || "") : "";
-    } catch (e) { return ""; }
-  };
-
+  /* ---------- Agende: manequim embutido (orcamento.samtto.com.br/?embed=1) ---------- */
   const form = $("#form-orcamento");
   if (form) {
-    const up = $("[data-upload]", form);
-    const upInput = $(".upload__input", up);
-    const upPrev = $(".upload__preview", up);
-    const zone = $(".upload__zone", up);
-    let refFile = null;
-    const setFile = (file) => {
-      if (!file || !file.type.startsWith("image/")) return;
-      refFile = file;
-      $("img", upPrev).src = URL.createObjectURL(file);
-      $(".upload__name", upPrev).textContent = file.name;
-      upPrev.hidden = false; zone.hidden = true;
-    };
-    upInput.addEventListener("change", () => setFile(upInput.files[0]));
-    $(".upload__remove", upPrev).addEventListener("click", () => { refFile = null; upInput.value = ""; upPrev.hidden = true; zone.hidden = false; });
+    const iframe = $(".mq iframe", form), localIn = $("#local", form), localTx = $("[data-local]", form);
+    const dica = localTx ? localTx.textContent : "";
+    addEventListener("message", (e) => {
+      if (!iframe || e.source !== iframe.contentWindow || !e.data || !e.data.manequim) return;
+      if (e.data.altura) iframe.style.height = `${Math.min(e.data.altura, 900)}px`;
+      localIn.value = e.data.local ? e.data.local + (e.data.corpo ? ` (corpo ${e.data.corpo.toLowerCase()})` : "") : "";
+      localTx.textContent = e.data.local ? `Marcado: ${e.data.local}` : dica;
+      localTx.classList.toggle("is-on", !!e.data.local);
+    });
     const params = new URLSearchParams(location.search);
     if (params.get("ref")) $("#ref", form).value = `Referência do site: ${params.get("ref")}`;
     if (params.get("tipo")) { const r = $(`input[name="tipo"][value="${params.get("tipo")}"]`, form); if (r) r.checked = true; }
@@ -328,27 +303,12 @@
       const v = (id) => ($(`#${id}`, form)?.value || "").trim();
       const pick = (n) => $(`input[name="${n}"]:checked`, form)?.value || "";
       const linhas = ["Salve Samtto! Vim pelo site.", pick("tipo") && `Quero: ${pick("tipo")}`, `Ideia: ${v("ideia")}`,
-        v("regiao") && `Região: ${v("regiao")}`, pick("tamanho") && `Tamanho: ${pick("tamanho")}`, v("ref"), `Nome: ${v("nome")}`];
+        v("local") && `Local: ${v("local")}`, v("ref"), `Nome: ${v("nome")}`];
       const junta = (a) => a.filter(Boolean).join("\n");
       const hint = $("[data-hint]", form);
       const avisa = (t) => { hint.textContent = t; hint.hidden = false; };
-      if (!refFile) {
-        await abreWa(junta(linhas));
-        if (!CONFIG.whatsappNumber) avisa("Mensagem copiada: é só colar no chat que abriu.");
-        return;
-      }
-      const botao = $('button[type="submit"]', form);
-      const rotulo = botao.innerHTML;
-      botao.disabled = true; botao.textContent = "Enviando imagem...";
-      const link = await enviaImagem(refFile);
-      botao.disabled = false; botao.innerHTML = rotulo;
-      if (link) {
-        await abreWa(junta([...linhas, `Imagem de referência: ${link}`]));
-        avisa(CONFIG.whatsappNumber ? "Pronto. A imagem foi junto, como link." : "Mensagem copiada com o link da imagem: cola no chat.");
-        return;
-      }
-      await abreWa(junta([...linhas, "Tenho uma imagem de referência, mando aqui em seguida."]));
-      avisa("Conversa aberta. Anexa a imagem pelo clipe do WhatsApp.");
+      await abreWa(junta(linhas));
+      if (!CONFIG.whatsappNumber) avisa("Mensagem copiada: é só colar no chat que abriu.");
     });
   }
 })();

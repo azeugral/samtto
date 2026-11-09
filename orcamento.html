@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500&family=Rubik+Dirt&family=Sedgwick+Ave+Display&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261104b">
+  <link rel="stylesheet" href="css/style.css?v=20261109a">
   <script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
@@ -83,25 +83,13 @@
         </fieldset>
         <div class="field"><label for="nome">Seu nome</label><input id="nome" type="text" autocomplete="given-name" required placeholder="Como ele te chama"><span class="field__err">Falta o nome.</span></div>
         <div class="field"><label for="ideia">A ideia</label><textarea id="ideia" required placeholder="Ex.: caveira com arame no antebraço, preto e vermelho"></textarea><small>Vibe, elementos, cores. Se viu algo no acervo, conta qual.</small><span class="field__err">Conta um pouco da ideia.</span></div>
-        <div class="field"><label for="regiao">Região do corpo</label><input id="regiao" type="text" placeholder="Ex.: antebraço direito"></div>
-        <fieldset class="field">
-          <legend>Tamanho</legend>
-          <div class="chips">
-            <label class="chip"><input type="radio" name="tamanho" value="Pequena (até 10 cm)"><span class="btn">Pequena</span></label>
-            <label class="chip"><input type="radio" name="tamanho" value="Média (10 a 20 cm)"><span class="btn">Média</span></label>
-            <label class="chip"><input type="radio" name="tamanho" value="Grande (mais de 20 cm)"><span class="btn">Grande</span></label>
-          </div>
-        </fieldset>
-        <div class="field"><label for="ref">Referência do site</label><input id="ref" type="text" placeholder="Opcional. Preenche sozinho se você vier do acervo"></div>
         <div class="field">
-          <label for="refimg">Imagem de referência</label>
-          <div class="upload" data-upload>
-            <input id="refimg" type="file" accept="image/*" class="upload__input">
-            <label for="refimg" class="upload__zone bevel-in"><strong>Adicionar imagem</strong><span>Da galeria ou tirar foto agora</span></label>
-            <div class="upload__preview bevel-in" hidden><img alt="" width="60" height="60"><span class="upload__name"></span><button type="button" class="btn upload__remove" aria-label="Remover imagem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M19 5 5 19M5 5l14 14"/></svg></button></div>
-          </div>
-          <small>Opcional. A imagem sobe junto e o link vai na mensagem.</small>
+          <span class="field__lbl">Onde no corpo <small>opcional</small></span>
+          <div class="mq bevel-in"><iframe src="https://orcamento.samtto.com.br/?embed=1" title="Manequim: toque onde vai a tatuagem" loading="lazy"></iframe></div>
+          <input type="hidden" id="local">
+          <small data-local>Toca no corpo. Dá pra marcar mais de um lugar, ou deixar em branco e combinar no chat.</small>
         </div>
+        <div class="field"><label for="ref">Referência do site</label><input id="ref" type="text" placeholder="Opcional. Preenche sozinho se você vier do acervo"></div>
         <button class="btn btn--red btn--wide" type="submit"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.4.8 3.2.6a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg> Mandar no WhatsApp</button>
         <p class="hint" data-hint hidden></p>
       </form>
@@ -125,6 +113,6 @@
     </div>
   </div>
 </footer>
-<script src="js/main.js?v=20261104" defer></script>
+<script src="js/main.js?v=20261109a" defer></script>
 </body>
 </html>
