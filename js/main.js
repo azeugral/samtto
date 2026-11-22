@@ -279,6 +279,20 @@
     });
   }
 
+  /* ---------- Disponíveis: provador 3D embutido no computador (no celular, atalho para a página inteira) ---------- */
+  const pvIf = $("[data-pv]");
+  if (pvIf && matchMedia("(min-width: 1081px)").matches) {
+    pvIf.src = pvIf.dataset.src; pvIf.hidden = false; pvIf.closest(".pv-site").classList.add("tem-3d");
+    addEventListener("message", (e) => {
+      if (e.source !== pvIf.contentWindow || !e.data || !e.data.manequim) return;
+      if (e.data.altura) pvIf.style.height = `${Math.max(560, Math.min(e.data.altura, 2400))}px`;
+      if (e.data.rolar) {
+        const base = pvIf.getBoundingClientRect().top + scrollY, t = base + e.data.rolar.t, b = base + e.data.rolar.b;
+        if (t < scrollY + 20 || b > scrollY + innerHeight - 16) scrollTo({ top: Math.max(0, t - 20), behavior: "smooth" });
+      }
+    });
+  }
+
   /* ---------- Agende: manequim embutido (orcamento.samtto.com.br/?embed=1) ---------- */
   const form = $("#form-orcamento");
   if (form) {
