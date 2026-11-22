@@ -411,6 +411,8 @@ dialog[open] .win { animation: win-in .32s var(--ease); }
    PROVADOR 3D dos disponíveis (LRGZ Manequim): janela no computador, atalho no celular
    ============================================================ */
 .pv-site { margin: 0 0 40px; }
+/* no computador a janela sai da coluna do texto: o provador precisa de ~1200 px para as 3 colunas */
+@media (min-width: 1081px) { .pv-site { position: relative; left: 50%; width: min(1260px, calc(100vw - 48px)); transform: translateX(-50%); } }
 .pv-win .pv-win__body { padding: 3px; background: var(--ink); }
 .pv-if { display: block; width: 100%; height: 860px; border: 0; background: var(--ink); color-scheme: light; }
 .pv-if[hidden] { display: none; }
