@@ -406,3 +406,5 @@ dialog[open] .win { animation: win-in .32s var(--ease); }
 .precos span { color: var(--paper-dim); }
 .precos b { font: 500 1.02rem var(--f-ui); color: var(--paper); white-space: nowrap; }
 .precos li:last-child b { color: var(--blood); }
+.card__s s, .precos s { color: var(--paper-dim); opacity: .7; margin-right: 4px; text-decoration-thickness: 1.5px; }
+.card__s b { color: var(--blood); font-weight: 600; }
